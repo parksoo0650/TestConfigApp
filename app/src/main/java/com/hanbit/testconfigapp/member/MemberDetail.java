@@ -7,193 +7,106 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.TypedValue;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hanbit.testconfigapp.action.IDetail;
+import com.hanbit.testconfigapp.factory.Composite;
 import com.hanbit.testconfigapp.factory.DetailQuery;
-import com.hanbit.testconfigapp.factory.LayoutParamsFactory;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 public class MemberDetail extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Intent intent=this.getIntent();
-        final String id=intent.getExtras().getString("id").toString();
         super.onCreate(savedInstanceState);
+        Intent intent=this.getIntent();
         final Context context=MemberDetail.this;
-        LinearLayout ui=new LinearLayout(context);
-        LinearLayout.LayoutParams weight=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT,1);
-        ui.setOrientation(LinearLayout.VERTICAL);
-        ui.setLayoutParams(LayoutParamsFactory.createLayoutParams("mm"));
-        LinearLayout uiId=new LinearLayout(context);
-        uiId.setLayoutParams(LayoutParamsFactory.createLayoutParams("mw"));
-        TextView tvId=new TextView(context);
-        tvId.setText("ID: ");
-        tvId.setLayoutParams(LayoutParamsFactory.createLayoutParams("ww"));
-        tvId.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
-        TextView tvIdContent=new TextView(context);
-        tvIdContent.setText("ID content");
-        tvIdContent.setLayoutParams(LayoutParamsFactory.createLayoutParams("ww"));
-        tvIdContent.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
-        uiId.addView(tvId);
-        uiId.addView(tvIdContent);
-        ui.addView(uiId);
-        LinearLayout uiName=new LinearLayout(context);
-        uiName.setLayoutParams(LayoutParamsFactory.createLayoutParams("mw"));
-        TextView tvName=new TextView(context);
-        tvName.setText("NAME: ");
-        tvName.setLayoutParams(LayoutParamsFactory.createLayoutParams("ww"));
-        tvName.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
-        TextView tvNameContent=new TextView(context);
-        tvNameContent.setText("NAME content");
-        tvNameContent.setLayoutParams(LayoutParamsFactory.createLayoutParams("ww"));
-        tvNameContent.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
-        uiName.addView(tvName);
-        uiName.addView(tvNameContent);
-        ui.addView(uiName);
-        LinearLayout uiPhone=new LinearLayout(context);
-        uiPhone.setLayoutParams(LayoutParamsFactory.createLayoutParams("mw"));
-        TextView tvPhone=new TextView(context);
-        tvPhone.setText("PHONE: ");
-        tvPhone.setLayoutParams(LayoutParamsFactory.createLayoutParams("ww"));
-        tvPhone.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
-        TextView tvPhoneContent=new TextView(context);
-        tvPhoneContent.setText("PHONE content");
-        tvPhoneContent.setLayoutParams(LayoutParamsFactory.createLayoutParams("ww"));
-        tvPhoneContent.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
-        uiPhone.addView(tvPhone);
-        uiPhone.addView(tvPhoneContent);
-        ui.addView(uiPhone);
-        LinearLayout uiAge=new LinearLayout(context);
-        uiAge.setLayoutParams(LayoutParamsFactory.createLayoutParams("mw"));
-        TextView tvAge=new TextView(context);
-        tvAge.setText("AGE: ");
-        tvAge.setLayoutParams(LayoutParamsFactory.createLayoutParams("ww"));
-        tvAge.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
-        TextView tvAgeContent=new TextView(context);
-        tvAgeContent.setText("AGE content");
-        tvAgeContent.setLayoutParams(LayoutParamsFactory.createLayoutParams("ww"));
-        tvAgeContent.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
-        uiAge.addView(tvAge);
-        uiAge.addView(tvAgeContent);
-        ui.addView(uiAge);
-        LinearLayout uiAddress=new LinearLayout(context);
-        uiAddress.setLayoutParams(LayoutParamsFactory.createLayoutParams("mw"));
-        TextView tvAddress=new TextView(context);
-        tvAddress.setText("ADDRESS: ");
-        tvAddress.setLayoutParams(LayoutParamsFactory.createLayoutParams("ww"));
-        tvAddress.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
-        TextView tvAddressContent=new TextView(context);
-        tvAddressContent.setText("ADDRESS content");
-        tvAddressContent.setLayoutParams(LayoutParamsFactory.createLayoutParams("ww"));
-        tvAddressContent.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
-        uiAddress.addView(tvAddress);
-        uiAddress.addView(tvAddressContent);
-        ui.addView(uiAddress);
-        LinearLayout uiSalary=new LinearLayout(context);
-        uiSalary.setLayoutParams(LayoutParamsFactory.createLayoutParams("mw"));
-        TextView tvSalary=new TextView(context);
-        tvSalary.setText("SALARY: ");
-        tvSalary.setLayoutParams(LayoutParamsFactory.createLayoutParams("ww"));
-        tvSalary.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
-        TextView tvSalaryContent=new TextView(context);
-        tvSalaryContent.setText("SALARY content");
-        tvSalaryContent.setLayoutParams(LayoutParamsFactory.createLayoutParams("ww"));
-        tvSalaryContent.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
-        uiSalary.addView(tvSalary);
-        uiSalary.addView(tvSalaryContent);
-        ui.addView(uiSalary);
-        LinearLayout uiButton1=new LinearLayout(context);
-        uiButton1.setLayoutParams(LayoutParamsFactory.createLayoutParams("mw"));
-        Button btLocation=new Button(context);
-        btLocation.setLayoutParams(weight);
-        btLocation.setText("LOCATION");
-        btLocation.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
-        Button btGoogleMap=new Button(context);
-        btGoogleMap.setLayoutParams(weight);
-        btGoogleMap.setText("GOOGLE MAP");
-        btGoogleMap.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
-        uiButton1.addView(btLocation);
-        uiButton1.addView(btGoogleMap);
-        ui.addView(uiButton1);
-        LinearLayout uiButton2=new LinearLayout(context);
-        uiButton2.setLayoutParams(LayoutParamsFactory.createLayoutParams("mw"));
-        Button btGallery=new Button(context);
-        btGallery.setLayoutParams(weight);
-        btGallery.setText("GALLERY");
-        btGallery.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
-        Button btMusic=new Button(context);
-        btMusic.setLayoutParams(weight);
-        btMusic.setText("MUSIC");
-        btMusic.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
-        uiButton2.addView(btGallery);
-        uiButton2.addView(btMusic);
-        ui.addView(uiButton2);
-        LinearLayout uiButton3=new LinearLayout(context);
-        uiButton3.setLayoutParams(LayoutParamsFactory.createLayoutParams("mw"));
-        Button btSMS=new Button(context);
-        btSMS.setLayoutParams(weight);
-        btSMS.setText("SMS");
-        btSMS.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
-        Button btMail=new Button(context);
-        btMail.setLayoutParams(weight);
-        btMail.setText("MAIL");
-        btMail.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
-        uiButton3.addView(btSMS);
-        uiButton3.addView(btMail);
-        ui.addView(uiButton3);
-        LinearLayout uiButton4=new LinearLayout(context);
-        uiButton4.setLayoutParams(LayoutParamsFactory.createLayoutParams("mw"));
-        Button btDial=new Button(context);
-        btDial.setLayoutParams(weight);
-        btDial.setText("DIAL");
-        btDial.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
-        Button btCall=new Button(context);
-        btCall.setLayoutParams(weight);
-        btCall.setText("CALL");
-        btCall.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
-        uiButton4.addView(btDial);
-        uiButton4.addView(btCall);
-        ui.addView(uiButton4);
-        LinearLayout uiButton5=new LinearLayout(context);
-        uiButton5.setLayoutParams(LayoutParamsFactory.createLayoutParams("mw"));
-        Button btList=new Button(context);
-        btList.setLayoutParams(weight);
-        btList.setText("LIST");
-        btList.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
-        Button btUpdate=new Button(context);
-        btUpdate.setLayoutParams(weight);
-        btUpdate.setText("UPDATE");
-        btUpdate.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
-        uiButton5.addView(btList);
-        uiButton5.addView(btUpdate);
-        ui.addView(uiButton5);
+        final String id=intent.getExtras().getString("id").toString();
+        HashMap<String,Object>components= (HashMap<String, Object>) init(context);
 
-        final MemDetail memberDetail=new MemDetail(context);
+
+
+
+        final DetailDao memberDetail=new DetailDao(context);
         IDetail service=new IDetail() {
             @Override
             public Map<String,String> list(String params) {
-                return memberDetail.detail("select _id AS id,name,phone,age,address,salary from member where _id='"+params+"';");
+                return memberDetail.detail("select _id AS id,name,phone,age,address,salary from member where _id='"+id+"';");
             }
         };
         Map<String,String> rsMap= (Map<String, String>) service.list(id);
+        String temp="";
+        Iterator<Map.Entry<String,String>>it =rsMap.entrySet().iterator();
+        while(it.hasNext()){
+            Map.Entry<String,String>entry=it.next();
+            temp+=entry.getKey()+","+entry.getValue()+",";
+        }
+        final String spec=temp;
         Toast.makeText(MemberDetail.this,"id값 확인"+id,Toast.LENGTH_LONG).show();
+        TextView tvIdContent = (TextView) components.get("tvDetailId");
         tvIdContent.setText(rsMap.get("id"));
+        TextView tvNameContent = (TextView) components.get("tvDetailName");
         tvNameContent.setText(rsMap.get("name"));
+        TextView tvPhoneContent = (TextView) components.get("tvDetailPhone");
         tvPhoneContent.setText(rsMap.get("phone"));
+        TextView tvAgeContent = (TextView) components.get("tvDetailAge");
         tvAgeContent.setText(rsMap.get("age"));
-        tvAddressContent.setText(rsMap.get("address"));
-        tvSalaryContent.setText(rsMap.get("salary"));
-        setContentView(ui);
+        TextView tvAddrContent = (TextView) components.get("tvDetailAddress");
+        tvAddrContent.setText(rsMap.get("address"));
+        TextView tvSalContent = (TextView) components.get("tvDetailSalary");
+        tvSalContent.setText(rsMap.get("salary"));
+        setContentView((LinearLayout) components.get("llDetailFrame"));
+        Button btLocation = (Button) components.get("btnDetailMyLocation");
+        btLocation.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        Button btGoogleMap = (Button) components.get("btnDetailGoogleMap");
+        btGoogleMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        Button btGallery = (Button) components.get("btnDetailAlbum");
+        btGallery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        Button btMusic = (Button) components.get("btnDetailMusic");
+        btMusic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        Button btSMS = (Button) components.get("btnDetailSMS");
+        btSMS.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        Button btMail = (Button) components.get("btnDetailMail");
+        btMail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        Button btDial = (Button) components.get("btnDetailDial");
         btDial.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -203,25 +116,33 @@ public class MemberDetail extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        Button btCall = (Button) components.get("btnDetailCall");
+        btCall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        Button btList = (Button) components.get("btnDetailList");
         btList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(context, MemberList.class));
-
             }
         });
+        Button btUpdate = (Button) components.get("btnDetailUpdate");
         btUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(context, MemberDetail.class);
-                intent.putExtra("id",id);
+                Intent intent=new Intent(context, MemberUpdate.class);
+                intent.putExtra("sepc",spec);
                 startActivity(intent);
             }
         });
     }
-    class MemDetail extends DetailQuery {
+    class DetailDao extends DetailQuery {
 
-        public MemDetail(Context context) {
+        public DetailDao(Context context) {
             super(context);
         }
 
@@ -245,5 +166,10 @@ public class MemberDetail extends AppCompatActivity {
             return map;
         }
     }
-
+    public HashMap<?,?>init(Context context){
+        Composite compo=new Composite(context,"MemberDetail");
+        compo.excute();
+        setContentView(compo.getFrame());
+        return  compo.getComponents();
+    }
 }

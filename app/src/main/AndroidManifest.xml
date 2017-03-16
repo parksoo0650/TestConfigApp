@@ -18,7 +18,8 @@
         </activity>
         <activity android:name=".member.MemList" />
         <activity android:name=".member.MemberList" />
-        <activity android:name=".member.MemberDetail"></activity>
+        <activity android:name=".member.MemberDetail" />
+        <activity android:name=".member.MemberUpdate"></activity>
     </application>
 
 </manifest>

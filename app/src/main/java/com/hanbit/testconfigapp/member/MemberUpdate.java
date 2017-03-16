@@ -1,8 +1,14 @@
 package com.hanbit.testconfigapp.member;
 
-/**
- * Created by hanbit on 2017-03-15.
- */
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
-public class MemberUpdate {
+public class MemberUpdate extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+
+    }
 }

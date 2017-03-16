@@ -1,11 +1,13 @@
 package com.hanbit.testconfigapp.member;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -19,7 +21,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.hanbit.testconfigapp.R;
+import com.hanbit.testconfigapp.action.IDelete;
 import com.hanbit.testconfigapp.action.IList;
+import com.hanbit.testconfigapp.factory.Composite;
+import com.hanbit.testconfigapp.factory.DeleteQuery;
 import com.hanbit.testconfigapp.factory.LayoutParamsFactory;
 import com.hanbit.testconfigapp.factory.ListQuery;
 
@@ -28,29 +33,33 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/*
+* @Create: 2017-03-16
+* @Auth: parkseoungsoo
+* @Story: 친구목록을 보여준다
+* @@Nested: Class ListDao, MemberAdapter, ViewHolder
+* */
 public class MemberList extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         final Context context=MemberList.this;
-        LinearLayout ui=new LinearLayout(context);
-        ui.setLayoutParams(LayoutParamsFactory.createLayoutParams("mm"));
-        ListView listView=new ListView(context);
-        listView.setLayoutParams(LayoutParamsFactory.createLayoutParams("mm"));
-        ui.addView(listView);
-        setContentView(ui);
-
-        final MemList memberList=new MemList(context);
-        IList service=new IList() {
+        HashMap<?,?>components=init(context);
+        final ListView listview= (ListView) components.get("MemberListView");
+        final HashMap<String,Object>map=new HashMap<>();
+        final ListDao memberList=new ListDao(context);
+        final IList service=new IList() {
             @Override
             public List<?> list() {
                 return memberList.list("select _id AS id, name, phone, age, address, salary from member;");
             }
         };
+
+
         final ArrayList<Map<String,String>> memberMap= (ArrayList<Map<String, String>>) service.list();
-        listView.setAdapter(new MemberAdapter(memberMap,context));
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listview.setAdapter(new MemberAdapter(memberMap,context));
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View v, int i, long l) {
                 Intent intent=new Intent(context,MemberDetail.class);
@@ -58,15 +67,43 @@ public class MemberList extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        listview.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View v, int i, long l) {
-                return false;
+                HashMap<String,String>temp= (HashMap<String, String>) listview.getItemAtPosition(i); //내가 길게누른 아이템을 가져옴
+                map.clear();
+                map.put("id",temp.get("id"));
+                new AlertDialog.Builder(context)
+                .setTitle("삭제")
+                .setMessage("정말 삭제하시겠습니까?")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            final DeleteDao deleteDao = new DeleteDao(context);
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                IDelete service = new IDelete() {
+                                    @Override
+                                    public void delete() {
+                                        deleteDao.delete("DELETE FROM Member WHERE _id='"+map.get("id")+"';");
+                                        startActivity(new Intent(context, MemberList.class));
+                                    }
+                                };
+                                service.delete();
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                //no를 클릭하면 그냥 닫히므로 코딩 할필요 없음
+                            }
+                        })
+                        .show();
+                //하나를 선택해서 담고, alert를 띄움
+                return true;
             }
         });
     }
-    class MemList extends ListQuery {
-        public MemList(Context context) {
+    class ListDao extends ListQuery {
+        public ListDao(Context context) {
             super(context);
         }
 
@@ -93,6 +130,17 @@ public class MemberList extends AppCompatActivity {
             return members;
         }
     }
+    class DeleteDao extends DeleteQuery {
+        public DeleteDao(Context context) {
+            super(context);
+        }
+
+        @Override
+        public void delete(String sql) {
+            super.getDatabase().execSQL(sql);
+        }
+    }
+
     class MemberAdapter extends BaseAdapter {
         ArrayList<Map<String,String>> list;
         LayoutInflater inflater;
@@ -155,4 +203,12 @@ public class MemberList extends AppCompatActivity {
         ImageView profileImg;
         TextView tvName,tvPhone;
     }
+
+    public HashMap<?,?>init(Context context){
+        Composite compo=new Composite(context,"MemberList");
+        compo.excute();
+        setContentView(compo.getFrame());
+        return  compo.getComponents();
+    }
 }
+

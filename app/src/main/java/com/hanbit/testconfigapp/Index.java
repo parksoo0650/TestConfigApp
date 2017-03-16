@@ -5,18 +5,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
-import com.hanbit.testconfigapp.factory.ButtonFactory;
-import com.hanbit.testconfigapp.factory.LiearLayoutFactory;
-import com.hanbit.testconfigapp.factory.TextViewFactory;
+import com.hanbit.testconfigapp.factory.Composite;
 import com.hanbit.testconfigapp.member.MemberList;
 
 import java.util.HashMap;
-import java.util.Map;
 
 public class Index extends AppCompatActivity {
     Button button;
@@ -24,18 +19,23 @@ public class Index extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         final Context context=Index.this;
-        init(context);
-        button.setOnClickListener(new View.OnClickListener(){
+        HashMap<?,?>components=init(context);
+        setContentView((LinearLayout) components.get("llIndex"));
+        ((Button) components.get("btnIndex")).setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(context, MemberList.class));
             }
         });
-
-
     }
-    public void init(Context context){
+    public HashMap<?,?>init(Context context){
+        Composite compo=new Composite(context,"Index");
+        compo.excute();
+        setContentView(compo.getFrame());
+        return  compo.getComponents();
+    }
+    /*public void init(Context context){
         Map<String,String>map=new HashMap<>();
         map.put("type","vertical");
         map.put("layoutParams","mm");
@@ -62,5 +62,5 @@ public class Index extends AppCompatActivity {
         btnMargin.setMargins(0,300,0,0);
         button.setLayoutParams(new LinearLayout.LayoutParams(btnMargin));
 
-    }
+    }*/
 }

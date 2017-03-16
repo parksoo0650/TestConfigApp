@@ -5,4 +5,5 @@ package com.hanbit.testconfigapp.action;
  */
 
 public interface IDelete {
+    public void delete();
 }

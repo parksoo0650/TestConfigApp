@@ -2,10 +2,10 @@ package com.hanbit.testconfigapp.factory;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -16,7 +16,7 @@ import java.util.HashMap;
  * Created by hanbit on 2017-03-16.
  */
 
-public class CompositeCompo {
+public class Composite {
     interface iComposite {
         public void excute();
     }
@@ -26,306 +26,200 @@ public class CompositeCompo {
     public LinearLayout getFrame() {
         return frame;
     }
+
     LinearLayout frame;
     String order;
     Context context;
 
-    public CompositeCompo(Context context, String order) {
+    public Composite(Context context, String order) {
         this.context = context;
         this.order = order;
     }
-    public HashMap<String, Object> getComponents(){
+
+
+    public HashMap<String, Object> getComponents() {
         return map;
     }
 
-        public void excute() { //선언된 순서대로 실행한다.
-            new ButtonCompo().service.excute();
-            new TextViewCompo().service.excute();
-            new LinearLayoutCompo().service.excute();
-            new ListViewComp().service.excute();
-            switch (order){
-                case "Index" : frame = (LinearLayout) map.get(order);
-                    frame.addView((android.widget.TextView) map.get("HelloTextView"));
-                    frame.addView((android.widget.Button) map.get("EnterButton"));
-                    break;
-                case "MemberList" : frame = (LinearLayout) map.get(order);
-                    frame.addView((android.widget.ListView) map.get("MemberListView")); //저쪽으로 ListView 전달
-                case "MemberDetail" : frame = (LinearLayout) map.get(order);
-                    frame.addView((LinearLayout) map.get("ll1"));
-                    frame.addView((LinearLayout) map.get("ll2"));
-                    frame.addView((LinearLayout) map.get("ll3"));
-                    frame.addView((LinearLayout) map.get("ll4"));
-                    frame.addView((LinearLayout) map.get("ll5"));
-                    frame.addView((LinearLayout) map.get("ll6"));
-                    frame.addView((LinearLayout) map.get("uiButton1"));
-                    frame.addView((LinearLayout) map.get("uiButton2"));
-                    frame.addView((LinearLayout) map.get("uiButton3"));
-                    frame.addView((LinearLayout) map.get("uiButton4"));
-                    frame.addView((LinearLayout) map.get("uiButton5"));
+    public void excute() { //선언된 순서대로 실행한다.
+        new ButtonCompo().service.excute();
+        new TextViewCompo().service.excute();
+        new LinearLayoutCompo().service.excute();
+        new ListViewComp().service.excute();
+        switch (order) {
+            case "Index":
+                frame = (LinearLayout) map.get("llIndex");
+                frame.addView((android.widget.TextView) map.get("tvIndex"));
+                frame.addView((android.widget.Button) map.get("btnIndex"));
+                break;
+            case "MemberList":
+                frame = (LinearLayout) map.get("llIndex");
+                frame.addView((ListView) map.get("MemberListView"));
+                break;
+            case "MemberDetail":
+                frame = (LinearLayout) map.get("llDetailFrame");
+                frame.addView((TextView) map.get("tvDetail"));
+                LinearLayout temp = (LinearLayout) map.get("llDetailSub");
+                temp.addView((TextView) map.get("tvDetailId"));
+                temp.addView((TextView) map.get("tvDetailName"));
+                temp.addView((TextView) map.get("tvDetailPhone"));
+                temp.addView((TextView) map.get("tvDetailAge"));
+                temp.addView((TextView) map.get("tvDetailAddress"));
+                temp.addView((TextView) map.get("tvDetailSalary"));
+                frame.addView(temp);
+                LinearLayout temp1 = (LinearLayout) map.get("llDetailBtns1");
+                temp1.addView((Button) map.get("btnDetailMyLocation"));
+                temp1.addView((Button) map.get("btnDetailGoogleMap"));
+                frame.addView(temp1);
+                LinearLayout temp2 = (LinearLayout) map.get("llDetailBtns2");
+                temp2.addView((Button) map.get("btnDetailAlbum"));
+                temp2.addView((Button) map.get("btnDetailMusic"));
+                frame.addView(temp2);
+                LinearLayout temp3 = (LinearLayout) map.get("llDetailBtns3");
+                temp3.addView((Button) map.get("btnDetailSMS"));
+                temp3.addView((Button) map.get("btnDetailMail"));
+                frame.addView(temp3);
+                LinearLayout temp4 = (LinearLayout) map.get("llDetailBtns4");
+                temp4.addView((Button) map.get("btnDetailDial"));
+                temp4.addView((Button) map.get("btnDetailCall"));
+                frame.addView(temp4);
+                LinearLayout temp5 = (LinearLayout) map.get("llDetailBtns5");
+                temp5.addView((Button) map.get("btnDetailUpdate"));
+                temp5.addView((Button) map.get("btnDetailList"));
+                frame.addView(temp5);
+        }
+    }
 
-                    break;
+    class ButtonCompo {
+        iComposite service = new iComposite() {
+            @Override
+            public void excute() {
+                Button button = null;
+                LinearLayout.LayoutParams mww = Complex.LayoutParamsFactory.create("mw", 1);
+                switch (order) {
+                    case "Index":
+                        int[] btnMarginArr = {0, 300, 0, 0};
+                        button = Complex.ButtonFactory.create(context, Complex.LayoutParamsFactory.create("mw"), "Button", "#00ff00", btnMarginArr);
+                        map.put("btnIndex", button);
+                        break;
+                    case "MemberDetail":
+                        map.put("btnDetailMyLocation", Complex.ButtonFactory.create(context, mww, "MY LOCATION"));
+                        map.put("btnDetailGoogleMap", Complex.ButtonFactory.create(context, mww, "GOOGLE MAP"));
+                        map.put("btnDetailAlbum", Complex.ButtonFactory.create(context, mww, "ALBUM"));
+                        map.put("btnDetailMusic", Complex.ButtonFactory.create(context, mww, "MUSIC"));
+                        map.put("btnDetailSMS", Complex.ButtonFactory.create(context, mww, "SMS"));
+                        map.put("btnDetailMail", Complex.ButtonFactory.create(context, mww, "MAIL"));
+                        map.put("btnDetailDial", Complex.ButtonFactory.create(context, mww, "DIAL", "#51b6e1"));
+                        map.put("btnDetailCall", Complex.ButtonFactory.create(context, mww, "CALL"));
+                        map.put("btnDetailUpdate", Complex.ButtonFactory.create(context, mww, "UPDATE", "#51b6e1"));
+                        map.put("btnDetailList", Complex.ButtonFactory.create(context, mww, "LIST", "#51b6e1"));
+                        break;
+                }
+            }
+        };
+    }
+
+    class TextViewCompo {
+        iComposite service = new iComposite() {
+            @Override
+            public void excute() {
+                LinearLayout.LayoutParams mw = Complex.LayoutParamsFactory.create("mw");
+                TextView tv = new TextView(context);
+                switch (order) {
+                    case "Index":
+                        tv = Complex.TextViewFactory.create(context, mw, "HELLO", 30);
+                        ViewGroup.MarginLayoutParams marginIndex = new ViewGroup.MarginLayoutParams(Complex.LayoutParamsFactory.create("mw"));
+                        marginIndex.setMargins(0, 200, 0, 0);
+                        tv.setLayoutParams(new LinearLayout.LayoutParams(marginIndex));
+                        map.put("tvIndex", tv);
+                        break;
+                    case "MemberDetail":
+                        map.put("tvDetail", Complex.TextViewFactory.create(context, mw, "상세", 30, "center"));
+                        map.put("tvDetailId", Complex.TextViewFactory.create(context, mw, "Name:", 25, "left"));
+                        map.put("tvDetailName", Complex.TextViewFactory.create(context, mw, "Name:", 25, "left"));
+                        map.put("tvDetailPhone", Complex.TextViewFactory.create(context, mw, "Phone:", 25, "left"));
+                        map.put("tvDetailAge", Complex.TextViewFactory.create(context, mw, "Age:", 25, "left"));
+                        map.put("tvDetailAddress", Complex.TextViewFactory.create(context, mw, "Address:", 25, "left"));
+                        map.put("tvDetailSalary", Complex.TextViewFactory.create(context, mw, "Salary:", 25, "left"));
+                        break;
+                    case "Temp":
+                        tv.setText("");
+                        tv.setGravity(Gravity.CENTER);
+                        tv.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                        tv.setTextSize(30);
+                        ViewGroup.MarginLayoutParams marginTmp = new ViewGroup.MarginLayoutParams(mw);
+                        marginTmp.setMargins(0, 200, 0, 0);
+                        tv.setLayoutParams(new LinearLayout.LayoutParams(marginTmp));
+                        map.put("tvTemp", tv);
+                        break;
+                }
+            }
+        };
+    }
+
+            class EditTextCompo {
+                iComposite service = new iComposite() {
+                    @Override
+                    public void excute() {
+                        EditText et = new EditText(context);
+                        switch (order) {
+                            case "Index":
+                                et.setText("");
+                                et.setLayoutParams(Complex.LayoutParamsFactory.create("mw"));
+                                map.put("etIndex", et);
+                                break;
+                        }
+                    }
+
+                };
+            }
+
+            class ListViewComp {
+                iComposite service = new iComposite() {
+                    @Override
+                    public void excute() {
+                        ListView listView = null;
+                        switch (order) {
+                            case "MemberList":
+                                listView = new ListView(context);
+                                listView.setLayoutParams(LayoutParamsFactory.createLayoutParams("mm"));
+                                map.put("MemberListView", listView);
+                                break;
+                        }
+                    }
+                };
+            }
+
+            class LinearLayoutCompo {
+                iComposite service = new iComposite() {
+                    @Override
+                    public void excute() {
+                        LinearLayout.LayoutParams mm = Complex.LayoutParamsFactory.create("mm");
+                        LinearLayout.LayoutParams mw = Complex.LayoutParamsFactory.create("mw");
+                        LinearLayout ll;
+                        switch (order) {
+                            case "Index":
+                            case "MemberList":
+                                int[] llMarginArr = {0, 200, 0, 0};
+                                ll = Complex.LinearLayoutFactory.create(context, mm, "v", llMarginArr);
+                                map.put("llIndex", ll);
+                                break;
+                            case "MemberDetail":
+                                map.put("llDetailFrame", Complex.LinearLayoutFactory.create(context, mm, "v"));
+                                map.put("llDetailSub", Complex.LinearLayoutFactory.create(context, mw, "v"));
+                                map.put("llDetailBtns1", Complex.LinearLayoutFactory.create(context, mw, "h"));
+                                map.put("llDetailBtns2", Complex.LinearLayoutFactory.create(context, mw, "h"));
+                                map.put("llDetailBtns3", Complex.LinearLayoutFactory.create(context, mw, "h"));
+                                map.put("llDetailBtns4", Complex.LinearLayoutFactory.create(context, mw, "h"));
+                                map.put("llDetailBtns5", Complex.LinearLayoutFactory.create(context, mw, "h"));
+                                break;
+                        }
+
+                    }
+                };
             }
         }
-        class ButtonCompo {
-            iComposite service = new iComposite() {
-                @Override
-                public void excute() {
-                    Button button = null;
-                    String text = "", layoutParams = "", bgColor = "";
-                    switch (order) {
-                        case "Index":
-                            button = new Button(context);
-                            button.setText("ENTER");
-                            button.setLayoutParams(LayoutParamsFactory.createLayoutParams("mw"));
-                            button.setBackgroundColor(Color.parseColor("#00FF00"));
-                            ViewGroup.MarginLayoutParams margin=new ViewGroup.MarginLayoutParams(button.getLayoutParams());
-                            margin.setMargins(0,300,0,0);
-                            button.setLayoutParams(new LinearLayout.LayoutParams(margin));
-                            map.put("EnterButton", button);
-                            break;
-                        case "MemberDetail" :
-                            LinearLayout.LayoutParams weight=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT,1);
-                              /* 구글맵 & 내 위치*/
-                            LinearLayout uiButton1=new LinearLayout(context);
-                            uiButton1.setLayoutParams(LayoutParamsFactory.createLayoutParams("mw"));
-                            Button btLocation=new Button(context);
-                            btLocation.setLayoutParams(weight);
-                            btLocation.setText("LOCATION");
-                            btLocation.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
-                            map.put("btLocation",btLocation);
-                            Button btGoogleMap=new Button(context);
-                            btGoogleMap.setLayoutParams(weight);
-                            btGoogleMap.setText("GOOGLE MAP");
-                            btGoogleMap.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
-                            map.put("btGoogleMap",btGoogleMap);
-                            uiButton1.addView(btLocation);
-                            uiButton1.addView(btGoogleMap);
-                            map.put("uiButton1",uiButton1);
-        /* 앨범  &  음악*/
-                            LinearLayout uiButton2=new LinearLayout(context);
-                            uiButton2.setLayoutParams(LayoutParamsFactory.createLayoutParams("mw"));
-                            Button btGallery=new Button(context);
-                            btGallery.setLayoutParams(weight);
-                            btGallery.setText("GALLERY");
-                            btGallery.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
-                            map.put("btGallery",btGallery);
-                            Button btMusic=new Button(context);
-                            btMusic.setLayoutParams(weight);
-                            btMusic.setText("MUSIC");
-                            btMusic.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
-                            map.put("btMusic",btMusic);
-                            uiButton2.addView(btGallery);
-                            uiButton2.addView(btMusic);
-                            map.put("uiButton2",uiButton2);
-        /* SMS & 메일 */
-                            LinearLayout uiButton3=new LinearLayout(context);
-                            uiButton3.setLayoutParams(LayoutParamsFactory.createLayoutParams("mw"));
-                            Button btSMS=new Button(context);
-                            btSMS.setLayoutParams(weight);
-                            btSMS.setText("SMS");
-                            btSMS.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
-                            map.put("btSMS",btSMS);
-                            Button btMail=new Button(context);
-                            btMail.setLayoutParams(weight);
-                            btMail.setText("MAIL");
-                            btMail.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
-                            map.put("btMail",btMail);
-                            uiButton3.addView(btSMS);
-                            uiButton3.addView(btMail);
-                            map.put("uiButton3",uiButton3);
-        /* 다이얼 & 콜 */
-                            LinearLayout uiButton4=new LinearLayout(context);
-                            uiButton4.setLayoutParams(LayoutParamsFactory.createLayoutParams("mw"));
-                            Button btDial=new Button(context);
-                            btDial.setLayoutParams(weight);
-                            btDial.setText("DIAL");
-                            btDial.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
-                            map.put("btDial",btDial);
-                            Button btCall=new Button(context);
-                            btCall.setLayoutParams(weight);
-                            btCall.setText("CALL");
-                            btCall.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
-                            map.put("btCall",btCall);
-                            uiButton4.addView(btDial);
-                            uiButton4.addView(btCall);
-                            map.put("uiButton4",uiButton4);
-        /* 목록가기 & 수정하기 */
-                            LinearLayout uiButton5=new LinearLayout(context);
-                            uiButton5.setLayoutParams(LayoutParamsFactory.createLayoutParams("mw"));
-                            Button btList=new Button(context);
-                            btList.setLayoutParams(weight);
-                            btList.setText("LIST");
-                            btList.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
-                            map.put("btList",btList);
-                            Button btUpdate=new Button(context);
-                            btUpdate.setLayoutParams(weight);
-                            btUpdate.setText("UPDATE");
-                            btUpdate.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
-                            map.put("btUpdate",btUpdate);
-                            uiButton5.addView(btList);
-                            uiButton5.addView(btUpdate);
-                            map.put("uiButton5",uiButton5);
-                            break;
-                    }
-                }
-            };
-        }
 
-        class TextViewCompo {
-            iComposite service = new iComposite() {
-                @Override
-                public void excute() {
-                    TextView tv1= null,tv2=null,tv3=null,tv4=null,tv5=null,tv6=null;
-                    TextView tv1_1= null,tv2_1=null,tv3_1=null,tv4_1=null,tv5_1=null,tv6_1=null;
-                    LinearLayout ll1=null,ll2=null,ll3=null,ll4=null,ll5=null,ll6=null;
-                    switch (order) {
-                        case "Index":
-                            tv1 = new TextView(context);
-                            tv1.setText("HelloTextView");
-                            tv1.setGravity(Gravity.CENTER);
-                            tv1.setLayoutParams(LayoutParamsFactory.createLayoutParams("mw"));
-                            tv1.setBackgroundColor(Color.parseColor(("#FFFFFF")));
-                            ViewGroup.MarginLayoutParams margin=new ViewGroup.MarginLayoutParams(tv1.getLayoutParams());
-                            margin.setMargins(0,300,0,0);
-                            tv1.setLayoutParams(new LinearLayout.LayoutParams(margin));
-                            map.put("HelloTextView", tv1);
-                            break;
-                        case "MemberDetail" :
-                             /* ID Row */
-                            ll1=new LinearLayout(context);
-                            ll1.setLayoutParams(LayoutParamsFactory.createLayoutParams("mw"));
-                            tv1=new TextView(context);
-                            tv1.setText("ID: ");
-                            tv1.setLayoutParams(LayoutParamsFactory.createLayoutParams("ww"));
-                            tv1.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
-                            tv1_1 =new TextView(context);
-                            tv1_1.setText("ID content");
-                            tv1_1.setLayoutParams(LayoutParamsFactory.createLayoutParams("ww"));
-                            tv1_1.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
-                            map.put("tvIdContent",tv1_1);
-                            ll1.addView(tv1);
-                            ll1.addView(tv1_1);
-                            map.put("ll1",ll1);
-        /* NAME Row */
-                            ll2=new LinearLayout(context);
-                            ll2.setLayoutParams(LayoutParamsFactory.createLayoutParams("mw"));
-                            tv2=new TextView(context);
-                            tv2.setText("NAME: ");
-                            tv2.setLayoutParams(LayoutParamsFactory.createLayoutParams("ww"));
-                            tv2.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
-                            tv2_1=new TextView(context);
-                            tv2_1.setText("NAME content");
-                            tv2_1.setLayoutParams(LayoutParamsFactory.createLayoutParams("ww"));
-                            tv2_1.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
-                            map.put("tvNameContent",tv2_1);
-                            ll2.addView(tv2);
-                            ll2.addView(tv2_1);
-                            map.put("ll2",ll2);
-        /* PHONE Row */
-                            ll3=new LinearLayout(context);
-                            ll3.setLayoutParams(LayoutParamsFactory.createLayoutParams("mw"));
-                            tv3=new TextView(context);
-                            tv3.setText("PHONE: ");
-                            tv3.setLayoutParams(LayoutParamsFactory.createLayoutParams("ww"));
-                            tv3.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
-                            tv3_1=new TextView(context);
-                            tv3_1.setText("PHONE content");
-                            tv3_1.setLayoutParams(LayoutParamsFactory.createLayoutParams("ww"));
-                            tv3_1.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
-                            map.put("tvPhoneContent",tv3_1);
-                            ll3.addView(tv3);
-                            ll3.addView(tv3_1);
-                            map.put("ll3",ll3);
-        /* AGE Row */
-                            ll4=new LinearLayout(context);
-                            ll4.setLayoutParams(LayoutParamsFactory.createLayoutParams("mw"));
-                            tv4=new TextView(context);
-                            tv4.setText("AGE: ");
-                            tv4.setLayoutParams(LayoutParamsFactory.createLayoutParams("ww"));
-                            tv4.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
-                            tv4_1=new TextView(context);
-                            tv4_1.setText("AGE content");
-                            tv4_1.setLayoutParams(LayoutParamsFactory.createLayoutParams("ww"));
-                            tv4_1.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
-                            map.put("tvAgeContent",tv4_1);
-                            ll4.addView(tv4);
-                            ll4.addView(tv4_1);
-                            map.put("ll4",ll4);
-        /* 주소Row */
-                            ll5=new LinearLayout(context);
-                            ll5.setLayoutParams(LayoutParamsFactory.createLayoutParams("mw"));
-                            tv5=new TextView(context);
-                            tv5.setText("ADDRESS: ");
-                            tv5.setLayoutParams(LayoutParamsFactory.createLayoutParams("ww"));
-                            tv5.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
-                            tv5_1=new TextView(context);
-                            tv5_1.setText("ADDRESS content");
-                            tv5_1.setLayoutParams(LayoutParamsFactory.createLayoutParams("ww"));
-                            tv5_1.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
-                            map.put("tvAddressContent",tv5_1);
-                            ll5.addView(tv5);
-                            ll5.addView(tv5_1);
-                            map.put("ll5",ll5);
-        /* 연봉 Row */
-                            ll6=new LinearLayout(context);
-                            ll6.setLayoutParams(LayoutParamsFactory.createLayoutParams("mw"));
-                            tv6=new TextView(context);
-                            tv6.setText("SALARY: ");
-                            tv6.setLayoutParams(LayoutParamsFactory.createLayoutParams("ww"));
-                            tv6.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
-                            tv6_1=new TextView(context);
-                            tv6.setText("SALARY content");
-                            tv6.setLayoutParams(LayoutParamsFactory.createLayoutParams("ww"));
-                            tv6.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
-                            map.put("tvSalaryContent",tv6);
-                            ll6.addView(tv6_1);
-                            ll6.addView(tv6);
-                            map.put("ll6",ll6);
-                            break;
-                    }
-                }
-            };
-        }
-
-        class EditTextCompo {
-            iComposite service = new iComposite() {
-                @Override
-                public void excute() {
-
-                }
-            };
-        }
-        class ListViewComp{
-            iComposite service = new iComposite() {
-                @Override
-                public void excute() {
-                    ListView listView=null;
-                    switch (order){
-                        case "MemberList":
-                            listView = new ListView(context);
-                            listView.setLayoutParams(LayoutParamsFactory.createLayoutParams("mm"));
-                            map.put("MemberListView", listView);
-                            break;
-                    }
-                }
-            };
-        }
-        class LinearLayoutCompo {
-            iComposite service = new iComposite() {
-                @Override
-                public void excute() {
-                    switch (order) {
-                        case "Index": case "MemberList" : case "MemberDetail" :
-                            frame = new LinearLayout(context);
-                            frame.setOrientation(LinearLayout.VERTICAL);
-                            frame.setLayoutParams(LayoutParamsFactory.createLayoutParams("mm"));
-                            map.put(order, frame);
-                            break;
-                    }
-                }
-            };
-        }
-    };
 
 
 

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.util.Map;
+
 /**
  * Created by hanbit on 2017-03-15.
  */
@@ -22,6 +24,6 @@ public abstract class WriteQuery extends QueryFactory {
         return helper.getWritableDatabase();
     }
 
-    public abstract void update(String sql);
+    public abstract Map<String,String> update(String sql);
 }
 

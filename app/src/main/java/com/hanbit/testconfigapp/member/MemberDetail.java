@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.hanbit.testconfigapp.action.IDetail;
 import com.hanbit.testconfigapp.factory.Composite;
 import com.hanbit.testconfigapp.factory.DetailQuery;
+import com.hanbit.testconfigapp.message.MessageWrite;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -41,7 +42,7 @@ public class MemberDetail extends AppCompatActivity {
                 return memberDetail.detail("select _id AS id,name,phone,age,address,salary from member where _id='"+id+"';");
             }
         };
-        Map<String,String> rsMap= (Map<String, String>) service.list(id);
+        final Map<String,String> rsMap= (Map<String, String>) service.list(id);
         String temp="";
         Iterator<Map.Entry<String,String>>it =rsMap.entrySet().iterator();
         while(it.hasNext()){
@@ -96,7 +97,9 @@ public class MemberDetail extends AppCompatActivity {
         btSMS.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent=new Intent(context, MessageWrite.class);
+                intent.putExtra("idAndphone",rsMap.get("id")+","+rsMap.get("phone")+","+rsMap.get("name"));
+                startActivity(intent);
             }
         });
         Button btMail = (Button) components.get("btnDetailMail");
@@ -148,7 +151,7 @@ public class MemberDetail extends AppCompatActivity {
 
         @Override
         public Map<String,String> detail(String sql) {
-            Map<String,String> map=new HashMap<>();
+            Map<String,String> map=null;
             SQLiteDatabase db=super.getDatabase();
             Cursor cursor=db.rawQuery(sql,null);
             if(cursor!=null) {

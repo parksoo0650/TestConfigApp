@@ -109,10 +109,10 @@ public class Composite {
                         map.put("btnDetailMusic", Complex.ButtonFactory.create(context, mww, "MUSIC"));
                         map.put("btnDetailSMS", Complex.ButtonFactory.create(context, mww, "SMS"));
                         map.put("btnDetailMail", Complex.ButtonFactory.create(context, mww, "MAIL"));
-                        map.put("btnDetailDial", Complex.ButtonFactory.create(context, mww, "DIAL", "#51b6e1"));
+                        map.put("btnDetailDial", Complex.ButtonFactory.create(context, mww, "DIAL"));
                         map.put("btnDetailCall", Complex.ButtonFactory.create(context, mww, "CALL"));
-                        map.put("btnDetailUpdate", Complex.ButtonFactory.create(context, mww, "UPDATE", "#51b6e1"));
-                        map.put("btnDetailList", Complex.ButtonFactory.create(context, mww, "LIST", "#51b6e1"));
+                        map.put("btnDetailUpdate", Complex.ButtonFactory.create(context, mww, "UPDATE"));
+                        map.put("btnDetailList", Complex.ButtonFactory.create(context, mww, "LIST"));
                         break;
                 }
             }
